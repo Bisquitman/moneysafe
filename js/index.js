@@ -1,5 +1,6 @@
 import { convertStrToNum } from './modules/convertStrToNum.js';
 import { preload } from './modules/preloader.js';
+import { OverlayScrollbars } from './overlayscrollbars.esm.min.js';
 
 preload.init();
 
@@ -15,6 +16,7 @@ financeAmount.textContent = amount;
 const closeReport = (e) => {
   if (!e.target.closest('.report') || e.target === reportClose) {
     report.classList.remove('report_open');
+    // report.style.display = '';
     document.removeEventListener('click', closeReport);
   }
 };
@@ -22,6 +24,7 @@ const closeReport = (e) => {
 const openReport = (e) => {
   if (e.target === financeReportBtn) {
     report.classList.add('report_open');
+    // report.style.display = 'block';
     document.addEventListener('click', closeReport);
   }
 };
@@ -49,3 +52,5 @@ financeForm.addEventListener('submit', (e) => {
 });
 
 document.addEventListener('click', openReport);
+
+OverlayScrollbars(report, {});

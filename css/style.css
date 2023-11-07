@@ -192,7 +192,7 @@ fieldset {
 }
 
 .report_open {
-  display: block;
+  display: flex;
 }
 
 .report__container {
