@@ -12,12 +12,25 @@ let amount = 0;
 
 financeAmount.textContent = amount;
 
+const closeReport = (e) => {
+  if (!e.target.closest('.report') || e.target === reportClose) {
+    report.classList.remove('report_open');
+    document.removeEventListener('click', closeReport);
+  }
+};
+
+const openReport = (e) => {
+  if (e.target === financeReportBtn) {
+    report.classList.add('report_open');
+    document.addEventListener('click', closeReport);
+  }
+};
+
 financeForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const typeOperation = e.submitter.dataset.typeOperation;
 
   const changeAmount = Math.abs(convertStrToNum(financeForm.amount.value));
-  console.log('changeAmount: ', changeAmount);
 
   if (typeOperation === 'income') {
     amount += changeAmount;
@@ -35,9 +48,4 @@ financeForm.addEventListener('submit', (e) => {
   financeAmount.textContent = amount === 0 ? 0 : `${amount.toLocaleString(((amount + Number.EPSILON) * 100) / 100)} р.`;
 });
 
-financeReportBtn.addEventListener('click', (e) => {
-  report.classList.add('report_open');
-});
-reportClose.addEventListener('click', (e) => {
-  report.classList.remove('report_open');
-});
+document.addEventListener('click', openReport);
