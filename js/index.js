@@ -17,6 +17,7 @@ financeForm.addEventListener('submit', (e) => {
   const typeOperation = e.submitter.dataset.typeOperation;
 
   const changeAmount = Math.abs(convertStrToNum(financeForm.amount.value));
+  console.log('changeAmount: ', changeAmount);
 
   if (typeOperation === 'income') {
     amount += changeAmount;
@@ -31,7 +32,7 @@ financeForm.addEventListener('submit', (e) => {
   }
   console.log('amount: ', amount);
 
-  financeAmount.textContent = amount = 0 ? 0 : `${amount.toLocaleString(((amount + Number.EPSILON) * 100) / 100)} р.`;
+  financeAmount.textContent = amount === 0 ? 0 : `${amount.toLocaleString(((amount + Number.EPSILON) * 100) / 100)} р.`;
 });
 
 financeReportBtn.addEventListener('click', (e) => {
