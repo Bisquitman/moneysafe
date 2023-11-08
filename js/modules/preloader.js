@@ -1,27 +1,26 @@
 // Preloader
 export const preload = {
   elem: document.createElement('div'),
-  // content: '<div class="preload"><p class="preload__text">Загрузка...</p></div>',
   content: `
-    <div class="preload">
-      <div class="spinner">
-        <div class="bounce1"></div>
-        <div class="bounce2"></div>
-        <div class="bounce3"></div>
-      </div>
+    <div class="spinner">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
     </div>
   `,
-  add() {
-    main.style.display = 'flex';
-    main.append(this.elem);
+  add(container) {
+    container.style.position = 'relative';
+    // container.style.height = '64px';
+    container.append(this.elem);
   },
-  remove() {
-    this.elem.remove();
-    main.style = '';
+  remove(container) {
+    setTimeout(() => {
+      this.elem.remove();
+      container.style = '';
+    }, 500);
   },
   init() {
     this.elem.className = 'preload';
     this.elem.innerHTML = this.content;
   },
 };
-

@@ -34,3 +34,6 @@
 - [Исходники вёрстки](https://fs01.getcourse.ru/fileservice/file/download/a/251231/sc/176/h/edc67b8936c8f2c787df76b30c485942.zip)
 - [git-scm.com](https://git-scm.com/)
 - [github.com](https://github.com/)
+- [OverlayScrollbars](https://github.com/KingSora/OverlayScrollbars)
+- [API Finance manager](https://github.com/Quper24/api_finance.git)
+- [Glitch](https://glitch.com/)
