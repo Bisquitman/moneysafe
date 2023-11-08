@@ -9,8 +9,8 @@ export const preload = {
     </div>
   `,
   add(container) {
-    container.style.position = 'relative';
-    // container.style.height = '64px';
+    // container.style.position = 'relative';
+    this.elem.style.borderRadius = "60px";
     container.append(this.elem);
   },
   remove(container) {
