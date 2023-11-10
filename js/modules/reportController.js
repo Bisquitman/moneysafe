@@ -1,17 +1,20 @@
-import {preload} from "./preloader.js";
-import {getData} from "./service.js";
-import {OverlayScrollbars} from "../overlayscrollbars.esm.min.js";
-import {formatDate, typesOperation} from "./helpers.js";
+import { preload } from "./preloader.js";
+import { deleteData, getData } from "./service.js";
+import { OverlayScrollbars } from "../overlayscrollbars.esm.min.js";
+import { formatDate, typesOperation } from "./helpers.js";
+import { storage } from "../storage.js";
 
 const financeReportBtn = document.querySelector(".finance__report");
 const report = document.querySelector(".report");
 const reportDates = document.querySelector(".report__dates");
+const reportOperationList = document.querySelector(".report__operation-list");
+const reportTable = document.querySelector(".report__table");
 
 preload.init();
 
 OverlayScrollbars(report, {});
 
-const closeReport = ({target}) => {
+const closeReport = ({ target }) => {
   if (target.closest(".report__close") || (!target.closest(".report") && target !== financeReportBtn)) {
     gsap.to(report, {
       opacity: 0,
@@ -40,13 +43,11 @@ const openReport = (e) => {
 };
 
 const renderReport = (data) => {
-  const reportOperationList = document.querySelector('.report__operation-list');
-
-  reportOperationList.textContent = '';
+  reportOperationList.textContent = "";
 
   const reportRows = data.map((operation) => {
-    const reportRow = document.createElement('tr');
-    reportRow.className = 'report__row';
+    const reportRow = document.createElement("tr");
+    reportRow.className = "report__row";
     reportRow.innerHTML = `
       <td class="report__cell">${operation.category}</td>
       <td class="report__cell" style="text-align:end;">${operation.amount.toLocaleString()}&nbsp;&#8381;</td>
@@ -54,7 +55,7 @@ const renderReport = (data) => {
       <td class="report__cell">${formatDate(operation.date)}</td>
       <td class="report__cell">${typesOperation[operation.type]}</td>
       <td class="report__action-cell">
-        <button class="report__button report__button_table">&#10006;</button>
+        <button class="report__button report__button_table" data-del="${operation.id}">&#10006;</button>
       </td>
     `;
     return reportRow;
@@ -64,6 +65,40 @@ const renderReport = (data) => {
 };
 
 export const reportController = () => {
+  reportTable.addEventListener("click", async ({ target }) => {
+    const targetSort = target.closest("[data-sort]");
+    const targetDel = target.closest("[data-del]");
+
+    if (targetSort) {
+      const sortField = targetSort.dataset.sort;
+      renderReport(
+        [...storage.data].sort((a, b) => {
+          if (targetSort.dataset.direction === "up") {
+            [a, b] = [b, a];
+          }
+
+          if (sortField === "amount") {
+            return parseFloat(a[sortField]) < parseFloat(b[sortField]) ? -1 : 1;
+          } else {
+            return a[sortField] < b[sortField] ? -1 : 1;
+          }
+        }),
+      );
+      if (targetSort.dataset.direction === "up") {
+        targetSort.dataset.direction = "down";
+      } else {
+        targetSort.dataset.direction = "up";
+      }
+    }
+
+    if (targetDel) {
+      console.log(targetDel.dataset.del); //   todo Delete row
+      await deleteData(targetDel.dataset.del);
+      const data = await getData("finance");
+      renderReport(data);
+    }
+  });
+
   financeReportBtn.addEventListener("click", async () => {
     const textContent = financeReportBtn.textContent;
     // financeReportBtn.textContent = "Загрузка...";
@@ -72,7 +107,8 @@ export const reportController = () => {
     preload.add(financeReportBtn);
     financeReportBtn.disabled = true;
 
-    const data = await getData("api/test");
+    const data = await getData("finance");
+    storage.data = data;
 
     financeReportBtn.style = "";
     preload.remove(financeReportBtn);
@@ -96,7 +132,7 @@ export const reportController = () => {
       searchParams.append("endDate", formData.endDate);
     }
     const queryString = searchParams.toString();
-    const url = queryString ? `api/test?${queryString}` : "api/test";
+    const url = queryString ? `finance?${queryString}` : "finance";
 
     const data = await getData(url);
     renderReport(data);

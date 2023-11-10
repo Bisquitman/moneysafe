@@ -1,32 +1,67 @@
-import {convertStrToNum} from "./helpers.js";
+import { animationNumbers, convertStrToNum } from "./helpers.js";
+import { getData, postData } from "./service.js";
+import { preload } from "./preloader.js";
+import { storage } from "../storage.js";
 
 const financeForm = document.querySelector(".finance__form");
-const financeAmount = document.querySelector(".finance__amount");
+export const financeAmount = document.querySelector(".finance__amount");
 
 let amount = 0;
 
 financeAmount.textContent = amount;
 
-export const financeController = () => {
-  financeForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const typeOperation = e.submitter.dataset.typeOperation;
+const newOperation = async (e) => {
+  e.preventDefault();
+  const typeOperation = e.submitter.dataset.typeOperation;
 
-    const changeAmount = Math.abs(convertStrToNum(financeForm.amount.value));
+  const financeFormData = Object.fromEntries(new FormData(financeForm));
+  financeFormData.type = typeOperation;
 
-    if (typeOperation === "income") {
-      amount += changeAmount;
+  const operationNew = await postData("finance", financeFormData);
+
+  const changeAmount = Math.abs(convertStrToNum(operationNew.amount));
+
+  if (typeOperation === "income") {
+    amount += changeAmount;
+  }
+
+  if (typeOperation === "expenses") {
+    amount -= changeAmount;
+
+    // if (amount <= 0) {
+    //   amount = 0;
+    // }
+  }
+  // financeAmount.textContent = amount === 0 ? 0 : `${(((amount + Number.EPSILON) * 100) / 100).toLocaleString("RU-ru")} р.`;
+  financeAmount.textContent = `${(((amount + Number.EPSILON) * 100) / 100).toLocaleString("RU-ru")} р.`;
+  financeForm.reset();
+};
+
+export const financeController = async () => {
+  // financeAmount.textContent = "";
+  // financeAmount.style.fontSize = "18px";
+  // preload.add(financeAmount);
+
+  const operations = await getData("finance");
+
+  amount = operations.reduce((acc, item) => {
+    if (item.type === "income") {
+      acc += convertStrToNum(item.amount);
     }
 
-    if (typeOperation === "expenses") {
-      amount -= changeAmount;
-
-      if (amount <= 0) {
-        amount = 0;
-      }
+    if (item.type === "expenses") {
+      acc -= convertStrToNum(item.amount);
     }
-    console.log("amount: ", amount);
 
-    financeAmount.textContent = amount === 0 ? 0 : `${amount.toLocaleString(((amount + Number.EPSILON) * 100) / 100)} р.`;
-  });
-}
+    return acc;
+  }, 0);
+
+  storage.amount = amount;
+
+  // preload.remove(financeAmount);
+  // financeAmount.style = "";
+
+  animationNumbers(financeAmount, amount);
+
+  financeForm.addEventListener("submit", newOperation);
+};

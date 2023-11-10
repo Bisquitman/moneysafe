@@ -1,4 +1,4 @@
-import { API_URL } from './const.js';
+import {API_URL} from './const.js';
 
 export const getData = async (url) => {
   try {
@@ -9,6 +9,40 @@ export const getData = async (url) => {
     return await response.json();
   } catch (error) {
     console.warn('Ошибка при получении данных:', error);
+    throw error;
+  }
+};
+
+export const postData = async (url, data) => {
+  try {
+    const response = await fetch(`${API_URL}/${url}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.warn('Ошибка при отправке данных:', error);
+    throw error;
+  }
+};
+
+export const deleteData = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/finance/${id}`, {
+      method: "DELETE"
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.warn('Ошибка при удалении данных:', error);
     throw error;
   }
 };

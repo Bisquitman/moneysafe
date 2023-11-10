@@ -1,4 +1,4 @@
-export const API_URL = 'https://silent-gleaming-tsunami.glitch.me';
+export const API_URL = 'https://silent-gleaming-tsunami.glitch.me/api';
 
 /*
 API Endpoints
