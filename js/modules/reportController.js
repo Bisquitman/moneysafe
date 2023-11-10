@@ -1,14 +1,19 @@
 import { preload } from "./preloader.js";
 import { deleteData, getData } from "./service.js";
-import { OverlayScrollbars } from "../overlayscrollbars.esm.min.js";
+import { OverlayScrollbars } from "../libs/overlayscrollbars.esm.min.js";
 import { formatDate, typesOperation } from "./helpers.js";
 import { storage } from "../storage.js";
+import { financeController } from "./financeControler.js";
+import { clearChart, generateChart } from "./generateChart.js";
+
+let actualData = [];
 
 const financeReportBtn = document.querySelector(".finance__report");
 const report = document.querySelector(".report");
 const reportDates = document.querySelector(".report__dates");
 const reportOperationList = document.querySelector(".report__operation-list");
 const reportTable = document.querySelector(".report__table");
+const generateChartButton = document.querySelector("#generateChartButton");
 
 preload.init();
 
@@ -94,8 +99,10 @@ export const reportController = () => {
     if (targetDel) {
       console.log(targetDel.dataset.del); //   todo Delete row
       await deleteData(targetDel.dataset.del);
-      const data = await getData("finance");
-      renderReport(data);
+      const reportRow = targetDel.closest(".report__row");
+      reportRow.remove();
+      await financeController();
+      clearChart();
     }
   });
 
@@ -107,15 +114,15 @@ export const reportController = () => {
     preload.add(financeReportBtn);
     financeReportBtn.disabled = true;
 
-    const data = await getData("finance");
-    storage.data = data;
+    actualData = await getData("finance");
+    storage.data = actualData;
 
     financeReportBtn.style = "";
     preload.remove(financeReportBtn);
     financeReportBtn.textContent = textContent;
     financeReportBtn.disabled = false;
 
-    renderReport(data);
+    renderReport(actualData);
     openReport();
   });
 
@@ -134,7 +141,12 @@ export const reportController = () => {
     const queryString = searchParams.toString();
     const url = queryString ? `finance?${queryString}` : "finance";
 
-    const data = await getData(url);
-    renderReport(data);
+    actualData = await getData(url);
+    renderReport(actualData);
+    clearChart();
   });
 };
+
+generateChartButton.addEventListener("click", (e) => {
+  generateChart(actualData);
+});

@@ -33,14 +33,20 @@ const newOperation = async (e) => {
     // }
   }
   // financeAmount.textContent = amount === 0 ? 0 : `${(((amount + Number.EPSILON) * 100) / 100).toLocaleString("RU-ru")} р.`;
-  financeAmount.textContent = `${(((amount + Number.EPSILON) * 100) / 100).toLocaleString("RU-ru")} р.`;
+  // financeAmount.textContent = `${(((amount + Number.EPSILON) * 100) / 100).toLocaleString("RU-ru")} р.`;
+  animationNumbers(financeAmount, amount);
   financeForm.reset();
 };
 
 export const financeController = async () => {
   // financeAmount.textContent = "";
   // financeAmount.style.fontSize = "18px";
-  // preload.add(financeAmount);
+  preload.add(document.body);
+  document.querySelector('.preload').style.cssText = `
+    position: absolute;
+    border-radius: 0;
+    z-index: 99;
+  `;
 
   const operations = await getData("finance");
 
@@ -58,7 +64,7 @@ export const financeController = async () => {
 
   storage.amount = amount;
 
-  // preload.remove(financeAmount);
+  preload.remove(document.body);
   // financeAmount.style = "";
 
   animationNumbers(financeAmount, amount);

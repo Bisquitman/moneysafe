@@ -18,7 +18,8 @@
   <link href="./css/overlayscrollbars.min.css" rel="stylesheet">
   <link href="./css/style.css" rel="stylesheet">
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="./js/libs/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
   <script src="./js/index.js" type="module"></script>
 
   <title>MoneySafe | Личный финансовый менеджер</title>
@@ -41,11 +42,11 @@
             required>
 
           <datalist id="categoryList">
-            <option value="Продукты питания"></option>
-            <option value="Транспорт"></option>
-            <option value="Жилье"></option>
-            <option value="Развлечения"></option>
-            <option value="Одежда"></option>
+<!--            <option value="Продукты питания"></option>-->
+<!--            <option value="Транспорт"></option>-->
+<!--            <option value="Жилье"></option>-->
+<!--            <option value="Развлечения"></option>-->
+<!--            <option value="Одежда"></option>-->
           </datalist>
 
           <input type="text" class="finance__input finance__input--amount"
@@ -157,7 +158,7 @@
             id="generateChartButton">Сформировать график</button>
 
           <div class="report__chart">
-            <canvas id="myChart"></canvas>
+<!--            <canvas id="myChart"></canvas>-->
           </div>
 
           <button class="report__close">&#10006;</button>

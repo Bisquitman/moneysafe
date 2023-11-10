@@ -1,5 +1,5 @@
 export const convertStrToNum = (str) => {
-  const noSpaceStr = str.replace(/\s+/g, "").replace(",", ".");
+  const noSpaceStr = String(str).replace(/\s+/g, "").replace(",", ".");
   const num = parseFloat(noSpaceStr);
 
   if (!isNaN(num) && isFinite(num)) {
@@ -45,7 +45,7 @@ export const animationNumbers_old = (element, number) => {
 // Анимация цифр
 export const animationNumbers = (element, number) => {
   const fps = 60; // скорость анимации
-  const duration = 2000; // длительность анимации
+  const duration = 1200; // длительность анимации
   const frameDuration = 1000 / fps; // длительность одного "кадра"
   const totalFrames = Math.round(duration / frameDuration); // общее количество кадров
   let currentFrame = 0;

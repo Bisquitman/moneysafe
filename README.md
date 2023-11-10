@@ -32,8 +32,9 @@
 
 ## Полезные ссылки
 - [Исходники вёрстки](https://fs01.getcourse.ru/fileservice/file/download/a/251231/sc/176/h/edc67b8936c8f2c787df76b30c485942.zip)
-- [git-scm.com](https://git-scm.com/)
+- [Скачать git](https://git-scm.com/)
 - [github.com](https://github.com/)
-- [OverlayScrollbars](https://github.com/KingSora/OverlayScrollbars)
+- [OverlayScrollbars](https://github.com/KingSora/OverlayScrollbars) - библиотека для красивых скроллбаров
 - [API Finance manager](https://github.com/Quper24/api_finance.git)
 - [Glitch](https://glitch.com/)
+- [Chartjs](https://www.chartjs.org/) - библиотека для построения графиков
