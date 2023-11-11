@@ -5,6 +5,7 @@ import { storage } from "../storage.js";
 
 const financeForm = document.querySelector(".finance__form");
 export const financeAmount = document.querySelector(".finance__amount");
+const financeContainer = document.querySelector('.finance > .container')
 
 let amount = 0;
 
@@ -39,13 +40,9 @@ const newOperation = async (e) => {
 };
 
 export const financeController = async () => {
-  // financeAmount.textContent = "";
-  // financeAmount.style.fontSize = "18px";
-  preload.add(document.body);
+  preload.add(financeContainer);
   document.querySelector('.preload').style.cssText = `
-    position: absolute;
-    border-radius: 0;
-    z-index: 99;
+    border-radius: 30px;
   `;
 
   const operations = await getData("finance");
@@ -64,8 +61,7 @@ export const financeController = async () => {
 
   storage.amount = amount;
 
-  preload.remove(document.body);
-  // financeAmount.style = "";
+  preload.remove(financeContainer);
 
   animationNumbers(financeAmount, amount);
 

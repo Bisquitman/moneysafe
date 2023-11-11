@@ -12,7 +12,6 @@ export const datalistController = async () => {
   categoryList.textContent = '';
 
   const categories = await getData('categories');
-  console.log('categories: ', categories);
 
   const optionsIncome = categories.income.map(getCategories);
   const optionsExpenses = categories.expenses.map(getCategories);

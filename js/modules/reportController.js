@@ -109,8 +109,8 @@ export const reportController = () => {
   financeReportBtn.addEventListener("click", async () => {
     const textContent = financeReportBtn.textContent;
     // financeReportBtn.textContent = "Загрузка...";
-    financeReportBtn.textContent = "";
-    financeReportBtn.style.padding = "0";
+    // financeReportBtn.textContent = "";
+    // financeReportBtn.style.padding = "0";
     preload.add(financeReportBtn);
     financeReportBtn.disabled = true;
 
